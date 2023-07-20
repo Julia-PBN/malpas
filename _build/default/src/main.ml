@@ -1,9 +1,9 @@
 let file_to_string file =
-  let s = really_input_string file (in_channel_length file) in
+  let s = really_input_string file (in_channel_length file) in 
     close_in file;
     s
 
-let read_all file_name =
+let read_all file_name = 
   file_to_string (open_in file_name)
 
 
