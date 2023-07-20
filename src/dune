@@ -1,0 +1,4 @@
+(executable
+ (public_name malpas)
+ (name main)
+ (libraries malpas))
