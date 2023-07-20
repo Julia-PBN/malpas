@@ -5,22 +5,21 @@
 (generate_opam_files true)
 
 (source
- (github username/reponame))
+ (github Julia-PBN/malpas))
 
-(authors "Author Name")
+(authors "Julia-PBN" "desumn")
 
-(maintainers "Maintainer Name")
+(maintainers "Julia-PBN" "desumn")
 
-(license LICENSE)
+(license BSD-3-Clause)
 
-(documentation https://url/to/documentation)
+(documentation https://github.com/Julia-PBN/malpas)
 
 (package
  (name malpas)
- (synopsis "A short synopsis")
- (description "A longer description")
+ (synopsis "A programming language written in OCaml, how innovative !")
+ (description "TBD.")
  (depends ocaml dune)
  (tags
   (topics "to describe" your project)))
 
-; See the complete stanza docs at https://dune.readthedocs.io/en/stable/dune-files.html#dune-project
