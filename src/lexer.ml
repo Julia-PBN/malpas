@@ -85,9 +85,9 @@ let zero_pos =
     offset_pos = 0;
   }
 
-let of_string ~filename ~str = 
+let of_string ~filename ~source = 
   { 
-    source = String str;
+    source = String source;
     cur_pos = {zero_pos with filename};
     tokens = [];
     cur_lexeme = "";
