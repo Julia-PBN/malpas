@@ -63,7 +63,7 @@ type lexer = {
 
 val zero_pos : position
 
-val of_string : string -> string -> lexer
+val of_string : filename:string -> source:string -> lexer
 
 val cur_char : lexer -> char
 

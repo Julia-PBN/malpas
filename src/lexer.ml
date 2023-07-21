@@ -85,7 +85,7 @@ let zero_pos =
     offset_pos = 0;
   }
 
-let of_string filename str = 
+let of_string ~filename ~str = 
   { 
     source = String str;
     cur_pos = {zero_pos with filename};
