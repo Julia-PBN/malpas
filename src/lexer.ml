@@ -45,6 +45,7 @@ type token_type =
   | Less
   | More
   | NotEqual
+  | Ampersand
   | And
   | Or
   | Bang
@@ -166,7 +167,7 @@ let newline lexer = {lexer with cur_pos = inc_line lexer.cur_pos} |> check_eof
 
 let error lexer = {lexer with error = true}
 
-let is_single_operator c = List.mem c ['+' ; '-' ; '*' ; '/' ; '%' ; '=' ; '<' ; '>' ; '!' ]
+let is_single_operator c = List.mem c ['+' ; '-' ; '*' ; '/' ; '%' ; '=' ; '<' ; '>' ; '!' ; '&']
 
 let is_operator c = is_single_operator c || List.mem c ['|' ; '&']
 
@@ -225,7 +226,7 @@ and next_int lexer =
   | c when is_digit c -> next_int next_lexer
   | _ -> error lexer
 and next_full_operator lexer = 
-  let operator = next_operator lexer in
+  let operator = next_operator lexer 1 in
   let add_keyword = (fun token -> add_token token true operator) in
   match operator.cur_lexeme with
   | "+" -> add_keyword Plus
@@ -239,12 +240,13 @@ and next_full_operator lexer =
   | "<" -> add_keyword Less
   | ">" -> add_keyword More
   | "<>" -> add_keyword NotEqual
+  | "&" -> add_keyword Ampersand
   | "&&" -> add_keyword And
   | "||" -> add_keyword Or
   | "!" -> add_keyword Bang
   | "--" -> add_keyword MinusMinus
   | _ -> error operator
-and next_operator lexer =
+and next_operator lexer op_len =
   if lexer.eof 
   then lexer
   else 
@@ -252,12 +254,11 @@ and next_operator lexer =
   let next_lexer = advance lexer in
   let next_chr = cur_char next_lexer in
   match next_chr with
-  | '>' when chr = '<' -> next_operator next_lexer
-  | '|' when chr = '|' -> next_operator next_lexer
-  | '&' when chr = '&' -> next_operator next_lexer
-  | '=' when chr = '<' || chr = '>' -> next_operator next_lexer
-  | '-' when chr = '-' -> next_operator next_lexer
-  | c when is_single_operator c -> next_operator next_lexer
+  | '>' when chr = '<' && op_len = 1 -> next_operator next_lexer 2
+  | '|' when chr = '|' && op_len = 1 -> next_operator next_lexer 2
+  | '&' when chr = '&' && op_len = 1 -> next_operator next_lexer 2
+  | '=' when (chr = '<' || chr = '>') && op_len =1 -> next_operator next_lexer 2
+  | '-' when chr = '-' -> next_operator next_lexer (op_len + 1)
   | _ -> lexer
 and next_full_punctuation lexer =
   let punctuation = next_punctuation lexer in
