@@ -52,6 +52,7 @@ type token_type =
   | RParen
   | Comma
   | Colon
+  | MinusMinus
   | Ident of string
   | Int of int 
   | EOF
@@ -134,7 +135,16 @@ let is_digit c = Char.code '0' <= Char.code c && Char.code c <= Char.code '9'
 let is_alphanum c = is_letter c || is_digit c
   
 let is_whitespace c = List.mem c [' ' ; '\t']
-  
+
+let check_eof lexer = 
+  let s = 
+    match lexer.source with
+    | String str -> str
+  in
+  if lexer.cur_pos.offset_pos = String.length s
+  then {lexer with eof = true}
+  else lexer
+
 let advance_str lexer =
   let s = 
     match lexer.source with
@@ -144,17 +154,15 @@ let advance_str lexer =
   then lexer
   else 
     let lexer = add_to_lexeme (s.[lexer.cur_pos.offset_pos]) lexer in
-      if lexer.cur_pos.offset_pos = String.length s
-      then {lexer with eof = true}
-      else lexer
+      check_eof lexer
 
 let advance lexer =
   match lexer.source with
   | String _ -> advance_str lexer
 
-let skip lexer = {lexer with cur_pos = inc_pos 1 lexer.cur_pos} 
+let skip lexer = {lexer with cur_pos = inc_pos 1 lexer.cur_pos} |> check_eof
 
-let newline lexer = {lexer with cur_pos = inc_line lexer.cur_pos}
+let newline lexer = {lexer with cur_pos = inc_line lexer.cur_pos} |> check_eof
 
 let error lexer = {lexer with error = true}
 
@@ -234,6 +242,7 @@ and next_full_operator lexer =
   | "&&" -> add_keyword And
   | "||" -> add_keyword Or
   | "!" -> add_keyword Bang
+  | "--" -> add_keyword MinusMinus
   | _ -> error operator
 and next_operator lexer =
   if lexer.eof 
@@ -247,6 +256,7 @@ and next_operator lexer =
   | '|' when chr = '|' -> next_operator next_lexer
   | '&' when chr = '&' -> next_operator next_lexer
   | '=' when chr = '<' || chr = '>' -> next_operator next_lexer
+  | '-' when chr = '-' -> next_operator next_lexer
   | c when is_single_operator c -> next_operator next_lexer
   | _ -> lexer
 and next_full_punctuation lexer =
