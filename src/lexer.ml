@@ -154,6 +154,8 @@ let advance lexer =
 
 let skip lexer = {lexer with cur_pos = inc_pos 1 lexer.cur_pos} 
 
+let newline lexer = {lexer with cur_pos = inc_line lexer.cur_pos}
+
 let error lexer = {lexer with error = true}
 
 let is_single_operator c = List.mem c ['+' ; '-' ; '*' ; '/' ; '%' ; '=' ; '<' ; '>' ; '!' ]
@@ -169,6 +171,7 @@ let rec next_token lexer =
     let next_lexer = advance lexer in
     let next_chr = cur_char next_lexer in
     match next_chr with
+    | c when is_newline c -> next_token @@ newline lexer
     | c when is_whitespace c -> next_token @@ skip lexer
     | c when is_letter c -> next_ident_or_keyword next_lexer
     | c when is_digit c ->
