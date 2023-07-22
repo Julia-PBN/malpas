@@ -53,7 +53,6 @@ type token_type =
   | RParen
   | Comma
   | Colon
-  | MinusMinus
   | Ident of string
   | Int of int 
   | EOF
@@ -244,7 +243,6 @@ and next_full_operator lexer =
   | "&&" -> add_keyword And
   | "||" -> add_keyword Or
   | "!" -> add_keyword Bang
-  | "--" -> add_keyword MinusMinus
   | _ -> error operator
 and next_operator lexer op_len =
   if lexer.eof 
@@ -257,8 +255,7 @@ and next_operator lexer op_len =
   | '>' when chr = '<' && op_len = 1 -> next_operator next_lexer 2
   | '|' when chr = '|' && op_len = 1 -> next_operator next_lexer 2
   | '&' when chr = '&' && op_len = 1 -> next_operator next_lexer 2
-  | '=' when (chr = '<' || chr = '>') && op_len =1 -> next_operator next_lexer 2
-  | '-' when chr = '-' -> next_operator next_lexer (op_len + 1)
+  | '=' when (chr = '<' || chr = '>') && op_len = 1 -> next_operator next_lexer 2
   | _ -> lexer
 and next_full_punctuation lexer =
   let punctuation = next_punctuation lexer in
