@@ -1,0 +1,3 @@
+let main = function (): () is begin
+  5
+end
