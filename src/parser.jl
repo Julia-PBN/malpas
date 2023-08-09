@@ -60,6 +60,10 @@ end
   INT_XOR # ^
 end
 
+@enum AtomBuiltIn begin
+  UNIT_ELEM
+end
+
 Expression = Union{ParseFn, ParseIf, FnCall, Identifier, BuiltInt}
 
 struct LetStatement # let a = b 
@@ -263,6 +267,8 @@ function parse_atom(source, tokens, i)
     return parse_if(source, tokens, i)
   elseif t == Function
     return parse_fn(source, tokens, i)
+  elseif t == ElemUnit
+    return UNIT_ELEM, i+1
   end
   throw("non atom found") 
 end
@@ -332,7 +338,8 @@ function parse_type_atom(source, tokens, i)
     type, i = parse_type(source, tokens, i+1)
     @assert tokens[i].token == RParen
     return type, i+1
-  else
+  elseif t == TypeUnit
     UNIT, i+1
   end
+  throw("type not recognized at position ", tokens[i].position)
 end
