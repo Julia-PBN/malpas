@@ -64,7 +64,7 @@ end
   UNIT_ELEM
 end
 
-Expression = Union{ParseFn, ParseIf, FnCall, Identifier, BuiltInt}
+Expression = Union{ParseFn, ParseIf, FnCall, Identifier, BuiltInt, AtomBuiltIn}
 
 struct LetStatement # let a = b 
   name::String # the 'a'
