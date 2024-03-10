@@ -10,7 +10,7 @@ val inc_line : position -> position
 val dec_pos : int -> position -> position
 
 type token_type =
-    Let
+  | Let
   | Function
   | Begin
   | End
@@ -26,12 +26,13 @@ type token_type =
   | Mul
   | Div
   | Mod
-  | Equal
+  | Equal 
   | LessEqual
   | MoreEqual
   | Less
   | More
   | NotEqual
+  | Ampersand
   | And
   | Or
   | Bang
@@ -40,7 +41,7 @@ type token_type =
   | Comma
   | Colon
   | Ident of string
-  | Int of int
+  | Int of int 
   | EOF
 
 type token = {
@@ -55,7 +56,7 @@ type source = String of string
 type lexer = {
   source : source;
   cur_pos : position;
-  tokens : token list;
+  tokens : token array;
   cur_lexeme : string;
   eof : bool;
   error : bool;
@@ -72,3 +73,5 @@ val skip : lexer -> lexer
 val error : lexer -> lexer
 
 val next_token : lexer -> lexer
+
+val token_count : lexer -> int

@@ -1,3 +1,7 @@
+open Parser
+
+let _t : identifier = "e"
+
 let file_to_string file =
   let s = really_input_string file (in_channel_length file) in
     close_in file;

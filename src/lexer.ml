@@ -72,7 +72,7 @@ type lexer =
   {
     source : source;
     cur_pos : position;
-    tokens : token list;
+    tokens : token array;
     cur_lexeme : string;
     eof : bool;
     error : bool
@@ -90,7 +90,7 @@ let of_string ~filename ~source =
   { 
     source = String source;
     cur_pos = {zero_pos with filename};
-    tokens = [];
+    tokens = [||];
     cur_lexeme = "";
     eof = false;
     error = false
@@ -121,7 +121,7 @@ let add_token token_type is_keyword lexer =
     } 
   in 
   {lexer with
-     tokens = lexer.tokens @ [token];
+     tokens = Array.append lexer.tokens [|token|];
      cur_lexeme = "";
   }
 
@@ -274,3 +274,5 @@ and next_punctuation lexer =
   let next_chr = cur_char next_lexer in
   match next_chr with 
   | _ -> lexer 
+
+let token_count lexer = Array.length lexer.tokens
