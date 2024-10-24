@@ -1,4 +1,4 @@
-open Parser
+open Malpas.Parser
 
 let _t : identifier = "e"
 
