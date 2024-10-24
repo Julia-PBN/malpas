@@ -5,13 +5,13 @@ description: "TBD."
 maintainer: ["Julia-PBN" "desumn"]
 authors: ["Julia-PBN" "desumn"]
 license: "BSD-3-Clause"
-tags: ["topics" "to describe" "your" "project"]
+tags: ["compiler"]
 homepage: "https://github.com/Julia-PBN/malpas"
 doc: "https://github.com/Julia-PBN/malpas"
 bug-reports: "https://github.com/Julia-PBN/malpas/issues"
 depends: [
   "ocaml"
-  "dune" {>= "3.9"}
+  "dune" {>= "3.16"}
   "odoc" {with-doc}
 ]
 build: [

@@ -1,4 +1,4 @@
-(lang dune 3.9)
+(lang dune 3.16)
 
 (name malpas)
 
@@ -21,5 +21,5 @@
  (description "TBD.")
  (depends ocaml dune)
  (tags
-  (topics "to describe" your project)))
+  (compiler)))
 
