@@ -5,7 +5,8 @@ type atom =
   | Int 
   | Unit 
 and function_type = {
-  left : mtype
+  left : mtype;
+  right : mtype
 }
 and mtype = 
   | Atom of atom 
