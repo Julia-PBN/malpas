@@ -10,7 +10,6 @@ let file_to_string file =
 let read_all file_name =
   file_to_string (open_in file_name)
 
-
 let main () =
   let len = (Array.length Sys.argv) in
   let argv = (Array.sub Sys.argv 1 (len-1)) in (* skip argv0 *)
